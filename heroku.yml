@@ -1,6 +1,6 @@
 build:
   docker:
-    web: deploy/Dockerfile
+    web: frontend/Dockerfile
 release:
   image: web
 
