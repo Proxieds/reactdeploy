@@ -1,0 +1,55 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+body {
+  height: 100vh;
+  width: 100vw;
+  font-family: Roboto, Arial;
+}
+
+.background {
+  background-image: linear-gradient(to right bottom, #1b9cfc, #2b92e8, #3487d5, #3a7dc2, #3d73af, #466ea9, #4d68a2, #53639b, #645f9c, #765b9a, #875596, #974f8e);
+}
+
+.form h1 {
+  margin: 0;
+  padding: 0;
+}
+
+.login-form {
+  transform: translateY(40%);
+  border-radius: 5px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  background-color: white;
+  padding: 3em 0em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 25em;
+  text-align: center;
+  margin: auto;
+}
+
+.login-form h1 {
+  margin: 0 !important;
+}
+
+.login-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 70%;
+  text-align: center;
+  margin: auto;
+}
+
+.login-form .alert {
+  width: 80%;
+  height: 2.2rem;
+  margin: auto;
+  position: relative;
+  bottom: 1rem;
+}
+
+.text-input {
+  display: grid !important;
+}
