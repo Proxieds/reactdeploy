@@ -3,5 +3,3 @@ build:
     web: frontend/Dockerfile
 release:
   image: web
-run:
-  web: npm start
