@@ -25,23 +25,31 @@ COPY . .
 RUN yarn build
 
 # Choose NGINX as our base Docker image
-FROM nginx:1.21.6
+# FROM nginx:1.21.6
 
-# Set working directory to nginx asset directory
-WORKDIR /usr/share/nginx/html
+# # Set working directory to nginx asset directory
+# WORKDIR /usr/share/nginx/html
 
-# Remove default nginx static assets
-RUN rm -rf *
+# # Remove default nginx static assets
+# RUN rm -rf *
 
-# Add your nginx.conf
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# # Add your nginx.conf
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy static assets from builder stage
-COPY --from=builder /app/build .
+# # Copy static assets from builder stage
+# COPY --from=builder /app/build .
 
-# EXPOSE 80
+# # EXPOSE 80
 
-# Entry point when Docker container has started
-CMD /bin/bash -c "envsubst '\$PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf" && nginx -g 'daemon off;'
+# # Entry point when Docker container has started
+# CMD /bin/bash -c "envsubst '\$PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf" && nginx -g 'daemon off;'
 
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+# ENTRYPOINT ["nginx", "-g", "daemon off;"]
+FROM nginx:1.17-alpine
+RUN apk --no-cache add curl
+RUN curl -L https://github.com/a8m/envsubst/releases/download/v1.1.0/envsubst-`uname -s`-`uname -m` -o envsubst && \
+    chmod +x envsubst && \
+    mv envsubst /usr/local/bin
+COPY ./nginx.config /etc/nginx/nginx.template
+CMD ["/bin/sh", "-c", "envsubst < /etc/nginx/nginx.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
+COPY --from=builder /opt/web/build /usr/share/nginx/html
