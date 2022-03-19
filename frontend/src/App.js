@@ -12,6 +12,9 @@ import { BrowserRouter, BrowserRouter as Router, Route, Switch } from 'react-rou
 import ProfileScreen from "./components/AccountDetails/profileScreen";
 import NewPost from "./components/Posts/NewPost.js"
 
+const port = process.env.PORT || 3000;
+console.log(`Live on Port ${port}`);
+
 function App() {
 
     return (
