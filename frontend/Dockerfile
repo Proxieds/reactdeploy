@@ -9,17 +9,17 @@ COPY package.json package.json
 COPY yarn.lock yarn.lock
 
 # install node modules and build assets
-RUN yarn install --production
+RUN yarn install --production --ignore-engines
 
 # Copy all files from current directory to working dir in image
 # Except the one defined in '.dockerignore'
 COPY . .
 
 # Set Environment Variable
-ARG REACT_APP_IPV4ADDRESS
-ENV REACT_APP_IPV4ADDRESS=$REACT_APP_IPV4ADDRESS
-ARG REACT_APP_IPV6ADDRESS
-ENV REACT_APP_IPV6ADDRESS=$REACT_APP_IPV6ADDRESS
+# ARG REACT_APP_IPV4ADDRESS
+# ENV REACT_APP_IPV4ADDRESS=$REACT_APP_IPV4ADDRESS
+# ARG REACT_APP_IPV6ADDRESS
+# ENV REACT_APP_IPV6ADDRESS=$REACT_APP_IPV6ADDRESS
 
 # Create production build of React App
 RUN yarn build
@@ -42,4 +42,4 @@ COPY --from=builder /app/build .
 # EXPOSE 80
 
 # Entry point when Docker container has started
-CMD /bin/bash -c "envsubst '\$PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf" && nginx -g 'daemon off;'
+CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'
