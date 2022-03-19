@@ -33,6 +33,7 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Copy static assets from builder stage
 COPY --from=builder /app/build .
 
+CMD ["nginx", "-g", "daemon off;"]
 # EXPOSE 80
 
 # Entry point when Docker container has started
