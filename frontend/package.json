@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3000",
   "dependencies": {
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
@@ -11,20 +12,22 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.26.0",
+    "express": "^4.17.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-file-base64": "^1.0.3",
-    "react-router-dom": "^5.3.0",
     "react-markdown": "8.0.0",
+    "react-router-dom": "^5.3.0",
     "react-scripts": "5.0.0",
     "web-vitals": "^2.1.4",
     "yarn": "^1.22.17"
   },
   "scripts": {
-    "start": "node app",
+    "start": "PROD=true node server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postinstall": "yarn build"
   },
   "eslintConfig": {
     "extends": [
