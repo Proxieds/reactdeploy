@@ -10,4 +10,4 @@ FROM nginx:alpine
 COPY default.conf.template /etc/nginx/conf.d/default.conf.template
 COPY --from=build /usr/src/ssat-prep/client/build /usr/share/nginx/html
 
-CMD /bin/bash -c "envsubst '\$PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf" && nginx -g 'daemon off;'
+CMD ["nginx", "-g", "daemon off;"]
