@@ -1,40 +1,13 @@
-# Name the node stage "builder"
-FROM node:15-alpine AS builder
-
-# Set working directory
-WORKDIR /app
-
-# Copy our node module specification
-COPY package.json package.json
-COPY yarn.lock yarn.lock
-
-# install node modules and build assets
-RUN yarn install --production --ignore-engines
-
-# Copy all files from current directory to working dir in image
-# Except the one defined in '.dockerignore'
+#build stage
+FROM node:14-alpine AS build
+WORKDIR /usr/src/ssat-prep/client
+ENV PATH /app/node_modules/.bin:$PATH
 COPY . .
+RUN yarn install --production && yarn build 
 
-# Create production build of React App
-RUN yarn build
-
-# Choose NGINX as our base Docker image
+#run and serve stage
 FROM nginx:alpine
-
-# Set working directory to nginx asset directory
-WORKDIR /usr/share/nginx/html
-
-# Remove default nginx static assets
-RUN rm -rf *
-
-# Add your nginx.conf
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Copy static assets from builder stage
-COPY --from=builder /app/build .
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /usr/src/ssat-prep/client/build /usr/share/nginx/html
 
 CMD ["nginx", "-g", "daemon off;"]
-# EXPOSE 80
-
-# Entry point when Docker container has started
-# ENTRYPOINT ["nginx", "-g", "daemon off;"]
