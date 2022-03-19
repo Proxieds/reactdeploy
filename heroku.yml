@@ -1,9 +1,7 @@
 build:
   docker:
     web: frontend/Dockerfile
-release:
-  command:
-    - ENTRYPOINT ["nginx", "-g", "daemon off;"]
+release:ß
   image: web
 run:
   web: npm start
