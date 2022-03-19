@@ -25,7 +25,7 @@ COPY . .
 RUN yarn build
 
 # Choose NGINX as our base Docker image
-FROM nginx:alpine
+FROM nginx:1.21.6
 
 # Set working directory to nginx asset directory
 WORKDIR /usr/share/nginx/html
@@ -42,6 +42,6 @@ COPY --from=builder /app/build .
 # EXPOSE 80
 
 # Entry point when Docker container has started
-CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'
+CMD /bin/bash -c "envsubst '\$PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf" && nginx -g 'daemon off;'
 
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
