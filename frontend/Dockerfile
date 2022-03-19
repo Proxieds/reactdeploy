@@ -1,14 +1,22 @@
 #build stage
 FROM node:14-alpine AS build
-WORKDIR /usr/src/ssat-prep/client
-ENV PATH /app/node_modules/.bin:$PATH
+# Set working directory
+WORKDIR /app
+
+# Copy our node module specification
+COPY package.json package.json
+COPY yarn.lock yarn.lock
+
+# Copy all files from current directory to working dir in image
+# Except the one defined in '.dockerignore'
 COPY . .
-RUN yarn install --production && yarn build 
+
+# install node modules and build assets
+RUN yarn install --production
 
 #run and serve stage
-FROM nginx:alpine
-COPY --from=build-stage /usr/src/app/_site/ /usr/share/nginx/html
+FROM nginx:1.21.6
+COPY default.conf.template /etc/nginx/conf.d/default.conf.template
+COPY --from=builder /app/build .
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'
+CMD /bin/bash -c "envsubst '\$PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf" && nginx -g 'daemon off;'
