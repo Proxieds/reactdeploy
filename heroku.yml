@@ -1,7 +1,7 @@
 build:
   docker:
     web: frontend/Dockerfile
-release:ß
+release:
   image: web
 run:
   web: npm start
