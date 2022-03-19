@@ -15,12 +15,6 @@ RUN yarn install --production --ignore-engines
 # Except the one defined in '.dockerignore'
 COPY . .
 
-# Set Environment Variable
-ARG REACT_APP_IPV4ADDRESS
-ENV REACT_APP_IPV4ADDRESS=$REACT_APP_IPV4ADDRESS
-# ARG REACT_APP_IPV6ADDRESS
-# ENV REACT_APP_IPV6ADDRESS=$REACT_APP_IPV6ADDRESS
-
 # Create production build of React App
 RUN yarn build
 
