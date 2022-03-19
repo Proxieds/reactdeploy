@@ -7,7 +7,7 @@ RUN yarn install --production && yarn build
 
 #run and serve stage
 FROM nginx:alpine
-COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /usr/src/ssat-prep/client/build /usr/share/nginx/html
 
 CMD ["nginx", "-g", "daemon off;"]
